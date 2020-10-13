@@ -1,5 +1,8 @@
 import React from 'react';
 import Todos from './components/Todos';
+import Header from './components/layout/Header';
+import AddTodo from './components/AddTodo';
+
 import './App.css';
 
 class App extends React.Component {
@@ -8,7 +11,7 @@ class App extends React.Component {
       {
         id: 1,
         title: 'Take out the trash',
-        completed: true
+        completed: false
       },
       {
         id: 2,
@@ -23,14 +26,32 @@ class App extends React.Component {
     ]
   }
 
-  markComplete = () => {
-    console.log('from app.js');
-}
+  //toggle todoitem complete
+  markComplete = (id) => {
+    this.setState({todos: this.state.todos.map(todo => {
+      if(todo.id === id){
+        todo.completed = !todo.completed
+      }
+      return todo;
+    })
+    });
+  }
+
+  //delete todo
+  delTodo = (id) => {
+    this.setState({ todos: [...this.state.todos.filter(todo => 
+      todo.id !== id
+    )]})
+  }
 
   render(){
     return (
     <div className="App">
-      <Todos todos={this.state.todos} markComplete={this.markComplete}/>
+      <div className="container">
+        <Header />
+        <AddTodo />
+        <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo} />
+      </div>
     </div>
   );
 }
